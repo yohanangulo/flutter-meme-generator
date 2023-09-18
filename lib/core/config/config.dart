@@ -29,3 +29,5 @@ class Config {
   final Flavor flavor;
   final String baseUrl;
 }
+
+Config get config => getIt<Config>();

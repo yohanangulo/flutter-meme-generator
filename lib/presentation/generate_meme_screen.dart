@@ -17,7 +17,7 @@ class GenerateMemeScreen extends StatelessWidget {
             onPressed: () {
               context.go(Routes.home);
             },
-            icon: Icon(Icons.home),
+            icon: const Icon(Icons.home),
           ),
         ],
       ),
