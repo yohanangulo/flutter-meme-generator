@@ -13,7 +13,7 @@ class HomeScreen extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             const Text(
-              'Click start to start generating some memes',
+              'Click start to generate a meme',
               style: TextStyle(fontSize: 24),
             ),
             const SizedBox(
