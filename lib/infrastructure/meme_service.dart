@@ -1,8 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:learn_freezed/core/config/config.dart';
-import 'package:learn_freezed/domain/meme.dart';
 import 'package:retrofit/retrofit.dart';
+
+import 'dto/meme_dto.dart';
 
 part 'meme_service.g.dart';
 
@@ -18,5 +19,5 @@ abstract class MemeService {
   }
 
   @GET('meme')
-  Future<Meme> getMeme();
+  Future<MemeDTO> getMeme();
 }
