@@ -4,7 +4,9 @@ import 'package:learn_freezed/application/meme_cubit.dart';
 import 'package:learn_freezed/core/service_locator/service_locator.dart';
 
 class GlobalBlocs extends StatelessWidget {
-  const GlobalBlocs({super.key});
+  const GlobalBlocs({super.key, required this.child});
+
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +14,7 @@ class GlobalBlocs extends StatelessWidget {
       providers: [
         BlocProvider<MemeCubit>(lazy: false, create: (_) => getIt<MemeCubit>()),
       ],
-      child: Container(),
+      child: child,
     );
   }
 }

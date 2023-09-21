@@ -11,4 +11,13 @@ class Meme with _$Meme {
   }) = _Meme;
 
   const Meme._();
+
+  factory Meme.empty() {
+    return const Meme(
+      id: 0,
+      image: '',
+      caption: '',
+      category: '',
+    );
+  }
 }

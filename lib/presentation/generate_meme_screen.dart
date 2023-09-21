@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:learn_freezed/application/meme_cubit.dart';
 import 'package:learn_freezed/core/routes/routes.dart';
-import 'package:learn_freezed/domain/meme.dart';
+import 'package:learn_freezed/presentation/widgets/meme_card.dart';
 
 class GenerateMemeScreen extends StatefulWidget {
   const GenerateMemeScreen({super.key});
@@ -13,8 +15,6 @@ class GenerateMemeScreen extends StatefulWidget {
 class _GenerateMemeScreenState extends State<GenerateMemeScreen> {
   @override
   Widget build(BuildContext context) {
-    Meme visibleMeme;
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Meme generator'),
@@ -27,83 +27,25 @@ class _GenerateMemeScreenState extends State<GenerateMemeScreen> {
           ),
         ],
       ),
-      body: Container(
-        child: visibleMeme != null
-            ? Center(
-                child: Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Text(
-                          'Meme Category',
-                          style: TextStyle(
-                            fontSize: 36,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black),
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(3),
-                            ),
-                          ),
-                          child: const Text('Meme image'),
-                        ),
-                        const SizedBox(height: 8),
-                        const Text('Meme title'),
-                      ],
-                    ),
-                  ),
-                ),
-              )
-            : const Center(
-                child: Text('No meme loaded yet'),
-              ),
+      body: Center(
+        child: BlocBuilder<MemeCubit, MemeState>(
+          builder: (context, state) {
+            if (state.isLoading) {
+              return const CircularProgressIndicator();
+            }
+
+            if (state.failure != null) {
+              return const Text("An error occured fetching the meme");
+            }
+
+            return MemeCard(state.meme);
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.skip_next),
-        onPressed: () {},
+        onPressed: () => context.read<MemeCubit>().getMeme(),
       ),
     );
   }
 }
-
-        // child: visibleMeme != null
-        //     ? Center(
-        //         child: Card(
-        //           child: Padding(
-        //             padding: const EdgeInsets.all(8.0),
-        //             child: Column(
-        //               mainAxisSize: MainAxisSize.min,
-        //               children: [
-        //                 const Text(
-        //                   'Meme Category',
-        //                   style: TextStyle(
-        //                     fontSize: 36,
-        //                   ),
-        //                 ),
-        //                 const SizedBox(height: 8),
-        //                 Container(
-        //                   padding: const EdgeInsets.all(8),
-        //                   decoration: BoxDecoration(
-        //                     border: Border.all(color: Colors.black),
-        //                     borderRadius: const BorderRadius.all(
-        //                       Radius.circular(3),
-        //                     ),
-        //                   ),
-        //                   child: const Text('Meme image'),
-        //                 ),
-        //                 const SizedBox(height: 8),
-        //                 const Text('Meme title'),
-        //               ],
-        //             ),
-        //           ),
-        //         ),
-        //       )
-        //     : const Center(
-        //         child: Text('No meme loaded yet'),
-        //       ),

@@ -16,7 +16,9 @@ class MemeRepository {
       final meme = res.toDomain();
 
       return right(meme);
-    } catch (e) {
+    } catch (e, s) {
+      print(e);
+      print(s);
       return left(const MemeFailure.unexpected());
     }
   }
