@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:bloc/bloc.dart';
+import 'package:dartz/dartz.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:learn_freezed/domain/meme.dart';
@@ -15,17 +18,27 @@ class MemeCubit extends Cubit<MemeState> {
 
   final MemeRepository _memeRepository;
 
-  Future<void> getMeme() async {
-    emit(state.copyWith(
-      isLoading: true,
-      failure: null,
-    ));
+  final List<Meme> memesCache = [];
 
-    final failureOrMeme = await _memeRepository.getMeme();
+  void getMeme() async {
+    if (state.memeOrFailureOption.isSome()) {
+      emit(state.copyWith(memeOrFailureOption: some(right(memesCache[Random().nextInt(memesCache.length)]))));
+    } else {
+      emit(state.copyWith(isLoading: true));
 
-    failureOrMeme.fold(
-      (failure) => emit(state.copyWith(isLoading: false, failure: failure)),
-      (meme) => emit(state.copyWith(isLoading: false, meme: meme)),
-    );
+      final memeOrFailure = await _memeRepository.getMeme();
+
+      memeOrFailure.fold(
+        (failure) => emit(state.copyWith(isLoading: false, memeOrFailureOption: some(left(failure)))),
+        (memes) {
+          memesCache.addAll(memes);
+
+          emit(state.copyWith(
+            isLoading: false,
+            memeOrFailureOption: some(right(memes[Random().nextInt(memes.length)])),
+          ));
+        },
+      );
+    }
   }
 }

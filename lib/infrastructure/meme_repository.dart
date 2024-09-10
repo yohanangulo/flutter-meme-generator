@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:injectable/injectable.dart';
 import 'package:learn_freezed/domain/meme.dart';
 import 'package:learn_freezed/domain/meme_failure.dart';
@@ -10,15 +12,19 @@ class MemeRepository {
 
   final MemeService _memeService;
 
-  Future<Either<MemeFailure, Meme>> getMeme() async {
+  Future<Either<MemeFailure, List<Meme>>> getMeme() async {
     try {
-      final res = await _memeService.getMeme();
-      final meme = res.toDomain();
+      final res = await _memeService.getMemes();
 
-      return right(meme);
+      final memes = res.data.memes.map((e) => e.toDomain()).toList();
+
+      log(memes.toString());
+
+      return right(memes);
     } catch (e, s) {
-      print(e);
-      print(s);
+      log(e.toString());
+      log(s.toString());
+
       return left(const MemeFailure.unexpected());
     }
   }

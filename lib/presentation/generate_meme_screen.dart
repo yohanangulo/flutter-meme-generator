@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:learn_freezed/application/meme_cubit.dart';
 import 'package:learn_freezed/core/routes/routes.dart';
+import 'package:learn_freezed/domain/meme.dart';
 import 'package:learn_freezed/presentation/widgets/meme_card.dart';
 
 class GenerateMemeScreen extends StatefulWidget {
@@ -34,11 +35,13 @@ class _GenerateMemeScreenState extends State<GenerateMemeScreen> {
               return const CircularProgressIndicator();
             }
 
-            if (state.failure != null) {
-              return const Text("An error occured fetching the meme");
-            }
-
-            return MemeCard(state.meme);
+            return state.memeOrFailureOption.fold(
+              () => MemeCard(Meme.empty()),
+              (memeOrFailure) => memeOrFailure.fold(
+                (failure) => const Text("An error occured fetching the meme"),
+                (meme) => MemeCard(meme),
+              ),
+            );
           },
         ),
       ),

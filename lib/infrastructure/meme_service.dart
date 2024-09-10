@@ -18,6 +18,6 @@ abstract class MemeService {
     );
   }
 
-  @GET('meme')
-  Future<MemeDTO> getMeme();
+  @GET('get_memes')
+  Future<ResponseDTO> getMemes();
 }

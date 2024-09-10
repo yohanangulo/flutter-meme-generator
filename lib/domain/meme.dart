@@ -4,20 +4,20 @@ part 'meme.freezed.dart';
 @freezed
 class Meme with _$Meme {
   const factory Meme({
-    required int id,
+    required String id,
     required String image,
     required String caption,
-    required String category,
+    required String name,
   }) = _Meme;
 
   const Meme._();
 
   factory Meme.empty() {
     return const Meme(
-      id: 0,
+      id: '',
       image: '',
       caption: '',
-      category: '',
+      name: '',
     );
   }
 }
