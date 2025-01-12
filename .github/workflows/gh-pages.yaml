@@ -13,4 +13,5 @@ jobs:
       - uses: bluefireteam/flutter-gh-pages@v7
         with:
           baseHref: /flutter-meme-generator/
-          webRender: canvaskit
+          webRenderer: canvaskit
+          customArgs: -t lib/main_dev.dart
